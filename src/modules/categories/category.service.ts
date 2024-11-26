@@ -1,6 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { CategoryRepository } from './category.repository';
-
+import { CategoryRepository } from '@modules/categories/category.repository';
 
 @Injectable()
 export class CategoryService implements OnApplicationBootstrap {
@@ -29,5 +28,4 @@ export class CategoryService implements OnApplicationBootstrap {
   async getCategories() {
     return this.categoryRepository.findAll();
   }
-  
 }

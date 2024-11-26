@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import fetch from 'node-fetch';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Payment } from './payment.entity';
+import { Payment } from '@modules/stripe/Payment.entity';
 
 @Injectable()
 export class StripeService {

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Payment } from './payment.entity';
-import { StripeService } from './stripe.service';
-import { StripeController } from './stripe.controller';
+import { Payment } from '@modules/stripe/payment.entity';
+import { StripeService } from '@modules/stripe/stripe.service';
+import { StripeController } from '@modules/stripe/stripe.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Payment])],

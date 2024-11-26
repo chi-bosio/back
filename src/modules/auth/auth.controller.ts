@@ -14,19 +14,18 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto } from '../users/dtos/CreateUser.dto';
-import { UsersService } from '../users/users.service';
-import { AuthService } from './auth.service';
-import { LoginUserDto } from '../users/dtos/LoginUser.dto';
-import { GoogleAuthGuard } from './guards/google-auth.guard';
+import { CreateUserDto } from '@modules/users/dtos/CreateUser.dto';
+import { UsersService } from '@modules/users/users.service';
+import { AuthService } from '@modules/auth/auth.service';
+import { LoginUserDto } from '@modules/users/dtos/LoginUser.dto';
+import { GoogleAuthGuard } from '@modules/auth/guards/google-auth.guard';
 import * as dotenv from 'dotenv';
-import { MailService } from '../mail/mail.service';
-import { ChangePswDto } from '../users/dtos/ChangePsw.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { MailService } from '@modules/mail/mail.service';
+import { ChangePswDto } from '@modules/users/dtos/ChangePsw.dto';
+import { AuthGuard } from '@guards/auth.guard';
 dotenv.config({ path: './.env.local' });
 import { JwtService } from '@nestjs/jwt';
-import { CompleteProfileDto } from '../Users/dtos/CompleteProfile.dto';
-
+import { CompleteProfileDto } from '@modules/Users/dtos/CompleteProfile.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -53,13 +52,13 @@ export class AuthController {
   @Get('/google/callback')
   async googleCallback(@Req() req, @Res() res) {
     const user = req.user;
-  
+
     if (!user) {
       throw new UnauthorizedException('No se pudo autenticar con Google');
     }
-  
+
     const profileComplete = user.profileComplete;
-  
+
     const payload = {
       name: user.name,
       sub: user.id,
@@ -67,14 +66,14 @@ export class AuthController {
       isAdmin: user.isAdmin,
       avatar: user.avatar,
     };
-  
+
     const token = this.jwtService.sign(payload);
-  
+
     const redirectUrl = `${process.env.URL_FRONT}?token=${token}&profileComplete=${profileComplete}`;
-  
+
     return res.redirect(redirectUrl);
   }
-  
+
   @Post('generate-reset-token')
   async generateResetPassword(
     @Body('email') email: string,
@@ -109,27 +108,36 @@ export class AuthController {
     const userId = req.user.sub;
     return this.authService.changePassword(userId, changePswDto);
   }
-  
+
   @UseGuards(AuthGuard)
   @Put('/completeprofile')
-async completeProfile(@Body() completeUserDto: CompleteProfileDto, @Req() req, @Res() res) {
-  console.log("Solicitud recibida en /auth/completeprofile:", completeUserDto);
-  console.log("Request user:", req.user);
+  async completeProfile(
+    @Body() completeUserDto: CompleteProfileDto,
+    @Req() req,
+    @Res() res,
+  ) {
+    console.log(
+      'Solicitud recibida en /auth/completeprofile:',
+      completeUserDto,
+    );
+    console.log('Request user:', req.user);
 
-  const userId = req.user.sub;
- 
-  if (!userId) {
-    return res.status(400).json({
-      message: 'No se pudo identificar al usuario',
+    const userId = req.user.sub;
+
+    if (!userId) {
+      return res.status(400).json({
+        message: 'No se pudo identificar al usuario',
+      });
+    }
+
+    const updatedUser = await this.authService.updateUserProfile(
+      userId,
+      completeUserDto,
+    );
+
+    return res.status(200).json({
+      message: 'Perfil actualizado con éxito',
+      user: updatedUser,
     });
   }
-
-  const updatedUser = await this.authService.updateUserProfile(userId, completeUserDto);
-
-  return res.status(200).json({
-    message: 'Perfil actualizado con éxito',
-    user: updatedUser,
-  });
-}
-
 }

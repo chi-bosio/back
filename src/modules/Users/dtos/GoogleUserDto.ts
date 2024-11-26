@@ -1,11 +1,4 @@
-import {
-    IsDate,
-    IsEmail,
-    IsNotEmpty,
-    IsString,
-    Length,
-  } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class GoogleUserDto {
   /**
@@ -42,5 +35,4 @@ export class GoogleUserDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
 }

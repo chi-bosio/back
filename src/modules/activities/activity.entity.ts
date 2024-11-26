@@ -1,10 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
-import { Users } from '../users/users.entity';
-import { Category } from '../categories/category.entity';
-import { ActivityStatus } from './enums/ActivityStatus.enum';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { Users } from '@modules/Users/users.entity';
+import { Category } from '@modules/categories/category.entity';
+import { ActivityStatus } from '@modules/activities/enums/ActivityStatus.enum';
 
 @Entity({
-  name: "activities",
+  name: 'activities',
 })
 export class Activity {
   /**
@@ -21,7 +28,7 @@ export class Activity {
   @Column({
     type: 'varchar',
     length: 100,
-    nullable: false
+    nullable: false,
   })
   name: string;
 
@@ -31,7 +38,7 @@ export class Activity {
    */
   @Column({
     type: 'text',
-    nullable: false
+    nullable: false,
   })
   description: string;
 
@@ -40,7 +47,7 @@ export class Activity {
    */
   @Column({
     type: 'text',
-    nullable: false
+    nullable: false,
   })
   image: string;
 
@@ -50,7 +57,7 @@ export class Activity {
    */
   @Column({
     type: 'date',
-    nullable: false
+    nullable: false,
   })
   date: Date;
 
@@ -60,7 +67,7 @@ export class Activity {
    */
   @Column({
     type: 'varchar',
-    nullable: false
+    nullable: false,
   })
   time: string;
 
@@ -69,7 +76,7 @@ export class Activity {
    */
   @Column({
     type: 'varchar',
-    nullable: false
+    nullable: false,
   })
   place: string;
 
@@ -100,7 +107,7 @@ export class Activity {
     onDelete: 'CASCADE',
   })
   creator: Users;
-  
+
   /**
    * Relación con la entidad `Category`.
    * Una actividad tiene una categoría.
@@ -111,7 +118,7 @@ export class Activity {
   })
   category: Category;
 
-   /**
+  /**
    * Relación de muchos a muchos con los usuarios que participan en la actividad.
    */
   @ManyToMany(() => Users, (user) => user.participatedActivities)
@@ -130,6 +137,6 @@ export class Activity {
     type: 'enum',
     enum: ActivityStatus,
     default: ActivityStatus.PENDING,
-})
+  })
   status: ActivityStatus;
 }

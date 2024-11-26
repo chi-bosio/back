@@ -1,12 +1,12 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
+import { UsersController } from '@modules/Users/users.controller';
+import { UsersService } from '@modules/Users/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Users } from './users.entity';
-import { UsersRepository } from './users.repository';
-import { Credentials } from '../credentials/credentials.entity';
-import { MailModule } from '../mail/mail.module';
-import { AuthModule } from '../auth/auth.module';
+import { Users } from '@modules/Users/users.entity';
+import { UsersRepository } from '@modules/Users/users.repository';
+import { Credentials } from '@modules/credentials/credentials.entity';
+import { MailModule } from '@modules/mail/mail.module';
+import { AuthModule } from '@modules/auth/auth.module';
 
 @Module({
   imports: [

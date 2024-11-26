@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { loggerGblobal } from './middleware/logger.middleware';
+import { loggerGblobal } from '@middleware/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -9,9 +9,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.use(loggerGblobal);
-  app.enableCors()
-
-  
+  app.enableCors();
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Buddify')

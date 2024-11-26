@@ -1,7 +1,7 @@
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
-import { MailOptions } from './interfaces/mail-options.interface';
-import { sendMail } from 'src/utils/mailer';
-import { AuthService } from '../auth/auth.service';
+import { MailOptions } from '@modules/mail/interfaces/mail-options.interface';
+import { sendMail } from '@utils/mailer';
+import { AuthService } from '@modules/auth/auth.service';
 
 @Injectable()
 export class MailService {
